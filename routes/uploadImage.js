@@ -1,23 +1,41 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    let extArray = file.mimetype.split("/");
+    let extension = extArray[extArray.length - 1];
+    cb(null, file.fieldname + '-' + Date.now()+ '.' +extension)
+  }
+})
+
+const upload = multer({
+  storage,
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      cb(new Error('Please upload an image'))
+    }
+    cb(null, true)
+  },
+  limit: {
+    fileSize: 10000000
+  }
+}).single('imageSrc');
 
 router.route('/')
-  // .get(function (req, res) {
-  //   res.json("success");
-  // })
-  .post(function (req, res) {
-    console.log('req.files', req.files);
-    // const originImg = req.files.image[0];
+  .post(upload, function (req, res) {
+    const originImg = req.file;
+    console.log('imageName', originImg.filename);
+
     res.status(201).json({
       data: {
         msg: 'success',
-        req
-        // imageSrc: originImg
       },
     });
-    // res.status(404).json({
-    //   errorMsg: '資料不完全！'
-    // });
   });
 
 module.exports = router;
