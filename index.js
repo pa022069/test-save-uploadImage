@@ -1,22 +1,41 @@
 const bodyparser = require('body-parser');
 const express = require('express');
 const cors = require('cors');
+const engine = require("ejs-locals");
 const uploadImage = require('./routes/uploadImage');
 
 const app = express();
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
+app.use(cors({
+  origin: '*',
+  methods: [
+    'GET',
+    'POST',
+  ],
+  allowedHeaders: [
+    'Content-Type',
+  ],
+  credentials: true
+}));
+
+app.engine("ejs", engine);
+app.set('views','./views');
+app.set("view engine", "ejs");
 
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 app.use(bodyparser.json({ limit: '10mb' }));
 
+app.use(express.static('./uploads'));
+
 app.use('/api', uploadImage);
+
+app.get("/share", (req, res) => {
+  res.render('share', {
+    title: 'Share',
+    shareImg: `htts://jeffrey-work/api/${req.query.shareImg}`,
+    description: 'Share Desc'
+  });
+});
 
 app.listen(4001, function () {
   console.log('app listening on port 4001!');

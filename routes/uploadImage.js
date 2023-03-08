@@ -7,9 +7,13 @@ const storage = multer.diskStorage({
     cb(null, './uploads')
   },
   filename: function (req, file, cb) {
-    let extArray = file.mimetype.split("/");
-    let extension = extArray[extArray.length - 1];
-    cb(null, file.fieldname + '-' + Date.now()+ '.' +extension)
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      cb(new Error('Please upload an image'))
+    }
+    // let extArray = file.mimetype.split("/");
+    // let extension = extArray[extArray.length - 1];
+    // cb(null, file.fieldname + '-' + Date.now()+ '.' +extension)
+    cb(null, file.originalname);
   }
 })
 
@@ -27,14 +31,16 @@ const upload = multer({
 }).single('imageSrc');
 
 router.route('/')
+  .get(function (req, res) {
+    res.status(200).json({
+      msg: 'success',
+    });
+  })
   .post(upload, function (req, res) {
     const originImg = req.file;
-    console.log('imageName', originImg.filename);
-
-    res.status(201).json({
-      data: {
-        msg: 'success',
-      },
+    res.status(200).json({
+      msg: 'success',
+      shareImg: originImg.filename
     });
   });
 
