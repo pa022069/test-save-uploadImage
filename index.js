@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const engine = require("ejs-locals");
 const uploadImage = require('./routes/uploadImage');
+const engine = require("ejs-locals");
 
 const app = express();
 
@@ -19,8 +20,12 @@ app.use(cors({
 }));
 
 app.engine("ejs", engine);
-app.set('views','./views');
+app.set('views', './views');
 app.set("view engine", "ejs");
+
+app.engine('ejs', engine);
+app.set('views', './views');
+app.set('view engine', 'ejs');
 
 app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
 app.use(bodyparser.json({ limit: '10mb' }));
@@ -28,6 +33,14 @@ app.use(bodyparser.json({ limit: '10mb' }));
 app.use(express.static('./uploads'));
 
 app.use('/api', uploadImage);
+app.get('/share', function (req, res) {
+  res.render('share',
+    {
+      title: '分享頁面',
+      shareImg: 'http://localhost:4001/imageSrc.png'
+    }
+  );
+});
 
 app.get("/share", (req, res) => {
   res.render('share', {
