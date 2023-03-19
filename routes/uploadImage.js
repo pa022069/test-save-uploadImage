@@ -26,7 +26,7 @@ const upload = multer({
     cb(null, true)
   },
   limit: {
-    fileSize: 10000000
+    fileSize: 1000000 * 3
   }
 }).single('imageSrc');
 

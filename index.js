@@ -21,8 +21,8 @@ app.engine("ejs", engine);
 app.set('views', './views');
 app.set("view engine", "ejs");
 
-app.use(bodyparser.urlencoded({ limit: '10mb', extended: true }));
-app.use(bodyparser.json({ limit: '10mb' }));
+app.use(bodyparser.urlencoded({ limit: '3mb', extended: true }));
+app.use(bodyparser.json({ limit: '3mb' }));
 
 app.use(express.static('./uploads'));
 
