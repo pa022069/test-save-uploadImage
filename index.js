@@ -31,7 +31,8 @@ app.use('/api', uploadImage);
 app.get("/share", (req, res) => {
   res.render('share', {
     title: 'Share',
-    shareImg: `https://jeffrey-work.com/uploads/${req.query.shareImg}`,
+    // shareImg: `https://jeffrey-work.com/uploads/${req.query.shareImg}`,
+    shareImg: `http://97.74.84.85:4001/${req.query.shareImg}`,
     description: 'Share Desc'
   });
 });
