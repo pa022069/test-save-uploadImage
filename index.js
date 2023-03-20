@@ -30,10 +30,10 @@ app.use('/api', uploadImage);
 
 app.get("/share", (req, res) => {
   res.render('share', {
-    title: 'Share',
-    // shareImg: `https://jeffrey-work.com/uploads/${req.query.shareImg}`,
-    shareImg: `http://97.74.84.85:4001/${req.query.shareImg}`,
-    description: 'Share Desc'
+    title: '迪士尼百年慶典木質拼圖',
+    shareImg: `https://disney.jeffrey-work.com/uploads/${req.query.shareImg}`,
+    // shareImg: `http://97.74.84.85:4001/${req.query.shareImg}`,
+    description: '收錄一百位迪士尼宇宙的人氣角色，你猜得出來這些角色的名稱跟出自哪部作品嗎?'
   });
 });
 
